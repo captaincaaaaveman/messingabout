@@ -1,0 +1,8 @@
+spring.view.prefix=/WEB-INF/jsp/
+spring.view.suffix=.jsp
+
+callback.url = http://localhost:8080/oauth20/callback
+
+clientId = <COMPLETE_THIS>
+clientSecret = <COMPLETE_THIS>
+serverToken = <COMPLETE_THIS>
