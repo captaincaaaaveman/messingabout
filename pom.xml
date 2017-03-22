@@ -26,6 +26,16 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+
+		<!-- This will help during development : it automatically disables when run in production.
+		
+		One thing it does is restart automatically on code change.-->
+	    <dependency>
+    	    <groupId>org.springframework.boot</groupId>
+       	 	<artifactId>spring-boot-devtools</artifactId>
+        	<optional>true</optional>
+    	</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
