@@ -1,5 +1,5 @@
-spring.view.prefix=/WEB-INF/jsp/
-spring.view.suffix=.jsp
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
 
 callback.url = http://localhost:8080/oauth20/callback
 
