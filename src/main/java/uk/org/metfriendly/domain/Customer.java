@@ -1,4 +1,4 @@
-package org.metfriendly.giotto.domain;
+package uk.org.metfriendly.domain;
 
 public class Customer {
     private long id;
