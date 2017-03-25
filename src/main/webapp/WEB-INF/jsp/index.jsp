@@ -20,6 +20,28 @@
         </div>
     </nav>
 
+    <h1>Individual Income</h1>
+
+    <div>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>endpoint</th>
+                <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>/individual-income/sa/{utr}/annual-summary/{taxYear}</td>
+                <td>Discover available endpoints</td>
+                <td>
+                    <a class="btn btn-primary" href="annual-income">GET</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
     <h1>Lisa API endpoints</h1>
 
     <div>

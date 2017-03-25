@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import uk.org.metfriendly.model.Token;
 import uk.org.metfriendly.model.UnauthorizedException;
 import uk.org.metfriendly.service.HelloWorldService;
+import uk.org.metfriendly.service.IndividualIncomeService;
 import uk.org.metfriendly.service.OauthService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class HelloWorldController {
 
     private final HelloWorldService helloWorldService;
+    private final IndividualIncomeService individualIncomeService;
     private final OauthService oauthService;
     @Value("${clientId}")
     private String clientId;
@@ -31,8 +33,9 @@ public class HelloWorldController {
     private String callbackUrl;
 
     @Autowired
-    public HelloWorldController(HelloWorldService helloWorldService, OauthService oauthService) {
+    public HelloWorldController(HelloWorldService helloWorldService, IndividualIncomeService individualIncomeService, OauthService oauthService) {
         this.helloWorldService = helloWorldService;
+        this.individualIncomeService = individualIncomeService;
         this.oauthService = oauthService;
     }
 
@@ -41,6 +44,27 @@ public class HelloWorldController {
         return "index";
     }
 
+/*    @RequestMapping("/annual-income")
+    @ResponseBody
+    public String getAnnualIncomeSummary(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
+        if (session.getAttribute("userToken") == null) {
+
+            response.sendRedirect(getAuthorizationRequestUrl("read:individual-income", "http://localhost:8080/oauth20/callback/annual-income"));
+            return "";
+
+        } else {
+            Token userToken = (Token) session.getAttribute("userToken");
+            try {
+                return individualIncomeService.getAnnualIncomeSummary(userToken.getAccessToken());
+            } catch (UnauthorizedException ue) {
+                Token refreshedToken = oauthService.refreshToken(userToken.getRefreshToken());
+                session.setAttribute("userToken", refreshedToken);
+                return doCallHelloUser(refreshedToken.getAccessToken());
+            }
+        }
+    }
+    */
+    
     @RequestMapping("/lifetime-isa/manager")
     @ResponseBody
     public String discoverEndpoints(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
@@ -105,7 +129,21 @@ public class HelloWorldController {
             throw new RuntimeException("Failed to get Token", e);
         }
     }
-
+    /*
+    @RequestMapping("/oauth20/callback/annual-income")
+    public String callbackAnnualIncome(HttpSession session, @RequestParam("code") Optional<String> code, @RequestParam("error") Optional<String> error) {
+        if (!code.isPresent()) {
+            throw new RuntimeException("Couldn't get Authorization code: " + error.orElse("unknown_reason"));
+        }
+        try {
+            Token token = oauthService.getToken(code.get(), callbackUrl + "/annual-income");
+            session.setAttribute("userToken", token);
+            return "redirect:/annual-income";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get Token", e);
+        }
+    }
+*/
     
     @RequestMapping("/hello-user")
     @ResponseBody
