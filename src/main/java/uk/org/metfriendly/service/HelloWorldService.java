@@ -45,4 +45,11 @@ public class HelloWorldService {
                 "application/vnd.hmrc.1.0+json",
                 Optional.of(accessToken));
     }
+
+	public String discoverEndpoints(String accessToken) throws UnauthorizedException {
+        return serviceConnector.get(
+                "https://api.service.hmrc.gov.uk/lifetime-isa/manager/Z1126",
+                "application/vnd.hmrc.1.0+json",
+                Optional.of(accessToken));
+	}
 }

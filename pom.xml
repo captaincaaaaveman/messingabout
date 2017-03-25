@@ -7,8 +7,8 @@
 		<version>1.5.2.RELEASE</version>
 	</parent>
 
-	<groupId>uk.gov.hmrc</groupId>
-	<artifactId>api-example-java-client</artifactId>
+	<groupId>uk.org.metfriendly</groupId>
+	<artifactId>hmrc-test-client</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 

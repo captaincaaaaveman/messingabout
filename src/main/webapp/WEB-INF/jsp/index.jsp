@@ -20,6 +20,29 @@
         </div>
     </nav>
 
+    <h1>Lisa API endpoints</h1>
+
+    <div>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>endpoint</th>
+                <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>/lifetime-isa/manager/{lisaManagerReferenceNumber}</td>
+                <td>Discover available endpoints</td>
+                <td>
+                    <a class="btn btn-primary" href="lifetime-isa/manager">GET</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
     <h1>hello-world API example</h1>
 
     <div>

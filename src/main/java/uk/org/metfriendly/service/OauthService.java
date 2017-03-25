@@ -24,8 +24,8 @@ public class OauthService {
     private String clientId;
     @Value("${clientSecret}")
     private String clientSecret;
-    @Value("${callback.url}")
-    private String callbackUrl;
+//    @Value("${callback.url}")
+//    private String callbackUrl;
 
     public OauthService() {
         this.oAuthClient = new OAuthClient(new URLConnectionClient());
@@ -33,7 +33,7 @@ public class OauthService {
         tokenUrl = "https://api.service.hmrc.gov.uk/oauth/token";
     }
 
-    public Token getToken(String code) {
+    public Token getToken(String code, String callbackUrl) {
         try {
             OAuthClientRequest request = OAuthClientRequest
                     .tokenLocation(tokenUrl)
