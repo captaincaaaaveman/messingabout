@@ -33,7 +33,7 @@
             <tbody>
             <tr>
                 <td>/individual-income/sa/{utr}/annual-summary/{taxYear}</td>
-                <td>Discover available endpoints</td>
+                <td>Get a sample income summary</td>
                 <td>
                     <a class="btn btn-primary" href="annual-income">GET</a>
                 </td>
