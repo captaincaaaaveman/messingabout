@@ -64,7 +64,7 @@ public class HelloWorldController {
 			e.printStackTrace();
 		}
 		
-		model.addAttribute( hw );
+		model.addAttribute( "message", hw );
     	
     	return "index";
     }
