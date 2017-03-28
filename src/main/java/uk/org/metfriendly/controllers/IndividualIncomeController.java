@@ -40,7 +40,7 @@ public class IndividualIncomeController {
     @RequestMapping("/annual-income")
     @ResponseBody
     public String getAnnualIncomeSummary(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
-        if (session.getAttribute("userToken") == null) {
+        if (session.getAttribute("userToken") == null || ! checkScope( "read:individual-income", session )) {
 
             response.sendRedirect(getAuthorizationRequestUrl("read:individual-income", "http://localhost:8080/oauth20/callback/annual-income"));
             return "";
@@ -65,6 +65,7 @@ public class IndividualIncomeController {
         try {
             Token token = oauthService.getToken(code.get(), callbackUrl + "/annual-income");
             session.setAttribute("userToken", token);
+        	session.setAttribute("scope", "read:individual-income");
             return "redirect:/annual-income";
         } catch (Exception e) {
             throw new RuntimeException("Failed to get Token", e);
@@ -86,5 +87,10 @@ public class IndividualIncomeController {
             throw new RuntimeException(e);
         }
     }
+    
+    private boolean checkScope(String scope, HttpSession session) {
+		return scope.equals( session.getAttribute("scope") );
+	}
+
         
 }

@@ -24,8 +24,6 @@ public class OauthService {
     private String clientId;
     @Value("${clientSecret}")
     private String clientSecret;
-//    @Value("${callback.url}")
-//    private String callbackUrl;
 
     public OauthService() {
         this.oAuthClient = new OAuthClient(new URLConnectionClient());

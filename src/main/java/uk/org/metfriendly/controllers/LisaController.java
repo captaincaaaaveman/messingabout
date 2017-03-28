@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 @Controller
@@ -40,7 +41,7 @@ public class LisaController {
     @RequestMapping("/lifetime-isa/manager")
     @ResponseBody
     public String discoverEndpoints(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
-            if (session.getAttribute("userToken") == null) {
+            if (session.getAttribute("userToken") == null || ! checkScope( "read:lisa", session )  ) {
 
                 response.sendRedirect(getAuthorizationRequestUrl("read:lisa", "http://localhost:8080/oauth20/callback/lisa"));
                 return "";
@@ -57,7 +58,12 @@ public class LisaController {
             }
         }
     
-    @RequestMapping("/oauth20/callback/lisa")
+    
+    private boolean checkScope(String scope, HttpSession session) {
+		return scope.equals( session.getAttribute("scope") );
+	}
+
+	@RequestMapping("/oauth20/callback/lisa")
     public String callbackLisa(HttpSession session, @RequestParam("code") Optional<String> code, @RequestParam("error") Optional<String> error) {
         if (!code.isPresent()) {
             throw new RuntimeException("Couldn't get Authorization code: " + error.orElse("unknown_reason"));
@@ -65,6 +71,7 @@ public class LisaController {
         try {
             Token token = oauthService.getToken(code.get(), callbackUrl + "/lisa");
             session.setAttribute("userToken", token);
+        	session.setAttribute("scope", "read:lisa");
             return "redirect:/lifetime-isa/manager";
         } catch (Exception e) {
             throw new RuntimeException("Failed to get Token", e);

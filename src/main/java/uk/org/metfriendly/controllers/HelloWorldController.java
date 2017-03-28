@@ -5,9 +5,14 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.org.metfriendly.model.Token;
 import uk.org.metfriendly.model.UnauthorizedException;
@@ -41,32 +46,27 @@ public class HelloWorldController {
         return "index";
     }
 
-/*    @RequestMapping("/annual-income")
-    @ResponseBody
-    public String getAnnualIncomeSummary(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
-        if (session.getAttribute("userToken") == null) {
-
-            response.sendRedirect(getAuthorizationRequestUrl("read:individual-income", "http://localhost:8080/oauth20/callback/annual-income"));
-            return "";
-
-        } else {
-            Token userToken = (Token) session.getAttribute("userToken");
-            try {
-                return individualIncomeService.getAnnualIncomeSummary(userToken.getAccessToken());
-            } catch (UnauthorizedException ue) {
-                Token refreshedToken = oauthService.refreshToken(userToken.getRefreshToken());
-                session.setAttribute("userToken", refreshedToken);
-                return doCallHelloUser(refreshedToken.getAccessToken());
-            }
-        }
-    }
-    */
-    
     
     @RequestMapping("/hello-world")
-    @ResponseBody
-    public String helloWorld() {
-        return helloWorldService.helloWorld();
+    public String helloWorld( Model model ) {
+    	
+    	String response = helloWorldService.helloWorld();
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	HelloWorld hw = null;
+		try {
+			hw = mapper.readValue( response, HelloWorld.class );
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute( hw );
+    	
+    	return "index";
     }
 
     @RequestMapping("/hello-application")
@@ -87,33 +87,17 @@ public class HelloWorldController {
         try {
             Token token = oauthService.getToken(code.get(), callbackUrl);
             session.setAttribute("userToken", token);
+        	session.setAttribute("scope", "hello");
             return "redirect:/hello-user";
         } catch (Exception e) {
             throw new RuntimeException("Failed to get Token", e);
         }
     }
-
-
-    /*
-    @RequestMapping("/oauth20/callback/annual-income")
-    public String callbackAnnualIncome(HttpSession session, @RequestParam("code") Optional<String> code, @RequestParam("error") Optional<String> error) {
-        if (!code.isPresent()) {
-            throw new RuntimeException("Couldn't get Authorization code: " + error.orElse("unknown_reason"));
-        }
-        try {
-            Token token = oauthService.getToken(code.get(), callbackUrl + "/annual-income");
-            session.setAttribute("userToken", token);
-            return "redirect:/annual-income";
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get Token", e);
-        }
-    }
-*/
     
     @RequestMapping("/hello-user")
     @ResponseBody
     public String helloUser(HttpSession session, HttpServletResponse response) throws UnauthorizedException, IOException {
-        if (session.getAttribute("userToken") == null) {
+        if (session.getAttribute("userToken") == null || ! checkScope("hello", session)) {
 
             response.sendRedirect(getAuthorizationRequestUrl());
             return "";
@@ -151,4 +135,10 @@ public class HelloWorldController {
     private String doCallHelloUser(String token) throws UnauthorizedException {
         return helloWorldService.helloUser(token);
     }
+
+
+    private boolean checkScope(String scope, HttpSession session) {
+		return scope.equals( session.getAttribute("scope") );
+	}
+
 }
