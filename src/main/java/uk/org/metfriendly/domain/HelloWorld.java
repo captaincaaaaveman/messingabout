@@ -1,4 +1,4 @@
-package uk.org.metfriendly.controllers;
+package uk.org.metfriendly.domain;
 
 public class HelloWorld {
 
