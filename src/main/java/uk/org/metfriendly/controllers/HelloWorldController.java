@@ -50,6 +50,11 @@ public class HelloWorldController {
         return "index";
     }
 
+    @RequestMapping("index1")
+    public String index1() {
+        return "index_angular";
+    }
+
     
     @RequestMapping(value = "/hello-world.json", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
