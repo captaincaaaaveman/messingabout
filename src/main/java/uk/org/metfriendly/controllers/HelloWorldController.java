@@ -64,6 +64,7 @@ public class HelloWorldController {
     	String response = helloWorldService.helloWorld();
     	
     	ObjectMapper mapper = new ObjectMapper();
+    	
     	HelloWorld hw = null;
 		try {
 			hw = mapper.readValue( response, HelloWorld.class );

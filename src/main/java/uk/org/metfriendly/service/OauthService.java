@@ -17,18 +17,20 @@ public class OauthService {
 
     private final OAuthClient oAuthClient;
 
-    public final String authorizeUrl;
-    public final String tokenUrl;
-
     @Value("${clientId}")
     private String clientId;
+    
     @Value("${clientSecret}")
     private String clientSecret;
 
+    @Value("${authorizeUrl}")
+    public String authorizeUrl;
+
+    @Value("${tokenUrl}")
+    public String tokenUrl;
+    
     public OauthService() {
         this.oAuthClient = new OAuthClient(new URLConnectionClient());
-        authorizeUrl = "https://api.service.hmrc.gov.uk/oauth/authorize";
-        tokenUrl = "https://api.service.hmrc.gov.uk/oauth/token";
     }
 
     public Token getToken(String code, String callbackUrl) {

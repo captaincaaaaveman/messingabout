@@ -1,4 +1,4 @@
-package uk.org.metfriendly.service;
+	package uk.org.metfriendly.service;
 
 import com.google.common.base.Optional;
 
@@ -16,6 +16,9 @@ public class HelloWorldService {
     @Value("${serverToken}")
     private String serverToken;
 
+    @Value("${apiRoot}")
+    private String apiRoot;
+
     @Autowired
     public HelloWorldService(ServiceConnector serviceConnector) {
         this.serviceConnector = serviceConnector;
@@ -24,7 +27,7 @@ public class HelloWorldService {
     public String helloWorld() {
         try {
             return serviceConnector.get(
-                    "https://api.service.hmrc.gov.uk/hello/world",
+            		apiRoot + "hello/world",
                     "application/vnd.hmrc.1.0+json",
                     Optional.absent());
         } catch (UnauthorizedException e) {
@@ -34,22 +37,16 @@ public class HelloWorldService {
 
     public String helloApplication() throws UnauthorizedException {
         return serviceConnector.get(
-                "https://api.service.hmrc.gov.uk/hello/application",
+        		apiRoot + "hello/application",
                 "application/vnd.hmrc.1.0+json",
                 Optional.of(serverToken));
     }
 
     public String helloUser(String accessToken) throws UnauthorizedException {
         return serviceConnector.get(
-                "https://api.service.hmrc.gov.uk/hello/user",
+        		apiRoot + "hello/user",
                 "application/vnd.hmrc.1.0+json",
                 Optional.of(accessToken));
     }
 
-	public String discoverEndpoints(String accessToken) throws UnauthorizedException {
-        return serviceConnector.get(
-                "https://api.service.hmrc.gov.uk/lifetime-isa/manager/Z1126",
-                "application/vnd.hmrc.1.0+json",
-                Optional.of(accessToken));
-	}
 }

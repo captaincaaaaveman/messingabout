@@ -15,9 +15,13 @@ public class LisaService {
 
     @Value("${serverToken}")
     private String serverToken;
+    
     @Value("${lisaManagerReferenceNumber}")
     private String lisaManagerReferenceNumber;
 
+    @Value("${apiRoot}")
+    private String apiRoot;
+    
     @Autowired
     public LisaService(ServiceConnector serviceConnector) {
         this.serviceConnector = serviceConnector;
@@ -25,7 +29,7 @@ public class LisaService {
 
 	public String discoverEndpoints(String accessToken) throws UnauthorizedException {
         return serviceConnector.get(
-                "https://api.service.hmrc.gov.uk/lifetime-isa/manager/"+lisaManagerReferenceNumber,
+                apiRoot + "lifetime-isa/manager/"+lisaManagerReferenceNumber,
                 "application/vnd.hmrc.1.0+json",
                 Optional.of(accessToken));
 	}

@@ -6,3 +6,9 @@ callback.url = http://localhost:8080/oauth20/callback
 clientId = <COMPLETE_THIS>
 clientSecret = <COMPLETE_THIS>
 serverToken = <COMPLETE_THIS>
+
+lisaManagerReferenceNumber = Z1126
+
+apiRoot = https://test-api.service.hmrc.gov.uk/
+authorizeUrl = https://test-api.service.hmrc.gov.uk/oauth/authorize
+tokenUrl = https://test-api.service.hmrc.gov.uk/oauth/token
